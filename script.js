@@ -1,45 +1,60 @@
-function checkPassword(){
+const input = document.getElementById("passwordInput")
+input.addEventListener("input", liveCheck)
 
-    const password = document.getElementById("passwordInput").value
-    const result = document.getElementById("result")
+function liveCheck(){
+    const pass = input.value
+    updateLength(pass)
+    updateRule("ruleUpper", /[A-Z]/.test(pass))
+    updateRule("ruleLower", /[a-z]/.test(pass))
+    updateRule("ruleNumber", /[0-9]/.test(pass))
+    updateRule("ruleSymbol", /[!@#$%^&*]/.test(pass))
+}
 
-    let errors = []
+function updateLength(pass){
+    const el = document.getElementById("ruleLength")
+    const ok = pass.length >= 8
+    el.textContent = `${ok ? "✅" : "❌"} символов: ${pass.length} / 8`
+    el.className = ok ? "ok" : "bad"
+}
 
-    if(password.length < 8){
-        errors.push("минимум 8 символов")
-    }
-
-    if(!/[A-Z]/.test(password)){
-        errors.push("хотя бы одна БОЛЬШАЯ буква")
-    }
-
-    if(!/[a-z]/.test(password)){
-        errors.push("хотя бы одна маленькая буква")
-    }
-
-    if(!/[0-9]/.test(password)){
-        errors.push("хотя бы одна цифра")
-    }
-
-    if(!/[!@#$%^&*()_\-+=<>?]/.test(password)){
-        errors.push("хотя бы один символ (!@#$...)")
-    }
-
-    if(errors.length > 0){
-
-        result.innerHTML =
-        "Пароль недостаточно надёжный.<br>Не хватает:<br>• " +
-        errors.join("<br>• ")
-
+function updateRule(id, ok){
+    const el = document.getElementById(id)
+    if(ok){
+        el.className="ok"
+        el.textContent="✅ "+el.textContent.slice(2)
     }else{
-
-        result.innerHTML = ""
-        document.getElementById("successModal").style.display = "flex"
-
+        el.className="bad"
+        el.textContent="❌ "+el.textContent.slice(2)
     }
 
 }
 
+
+function checkPassword(){
+    const pass = input.value
+    const valid =
+        pass.length >= 8 &&
+        /[A-Z]/.test(pass) &&
+        /[a-z]/.test(pass) &&
+        /[0-9]/.test(pass) &&
+        /[!@#$%^&*]/.test(pass)
+
+    const modal = document.getElementById("resultModal")
+    const title = document.getElementById("resultTitle")
+    const gif = document.getElementById("resultGif")
+
+    if(valid){
+        title.textContent = "🎉 Отличный пароль!"
+        gif.src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif"
+    }else{
+        title.textContent = "⚠️ Пароль слабый"
+        gif.src="https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif"
+    }
+    modal.style.display="flex"
+}
+
+
 function closeModal(){
-    document.getElementById("successModal").style.display = "none"
+   document.getElementById("resultModal").style.display="none"
+
 }
