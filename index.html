@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Проверка пароля</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+<h1>Проверка пароля 🔐</h1>
+<p>Введите пароль:</p>
+<input id="passwordInput" type="text">
+<button onclick="checkPassword()">Проверить</button>
+<div class="result" id="result"></div>
+
+</div>
+<div class="modal" id="successModal">
+    <div class="modal-content">
+        <h2>Новый пароль принят!</h2>
+        <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif">
+        <br>
+        <button class="close" onclick="closeModal()">Закрыть</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
